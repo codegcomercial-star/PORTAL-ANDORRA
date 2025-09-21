@@ -1,0 +1,81 @@
+{
+  "navigation": {
+    "home": "Inici",
+    "bopa": "BOPA",
+    "normativa": "Normativa",
+    "noticias": "Notícies",
+    "clima": "Clima",
+    "finanzas": "Finances",
+    "cripto": "Cripto",
+    "irpf": "IRPF",
+    "buscador": "Cercador IA",
+    "admin": "Admin",
+    "login": "Entrar",
+    "logout": "Sortir",
+    "profile": "Perfil"
+  },
+  "common": {
+    "loading": "Carregant...",
+    "error": "Error",
+    "success": "Èxit",
+    "save": "Desar",
+    "cancel": "Cancel·lar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "search": "Cercar",
+    "filter": "Filtrar",
+    "export": "Exportar",
+    "import": "Importar",
+    "language": "Idioma",
+    "theme": "Tema",
+    "light": "Clar",
+    "dark": "Fosc"
+  },
+  "home": {
+    "title": "Portal Econòmic d'Andorra",
+    "subtitle": "La vostra font d'informació econòmica i legal d'Andorra",
+    "hero": {
+      "title": "Tota la informació d'Andorra en un sol lloc",
+      "description": "Accediu al BOPA, normativa, notícies, finances i calculadora IRPF amb la potència de la intel·ligència artificial"
+    },
+    "features": {
+      "bopa": {
+        "title": "BOPA",
+        "description": "Accés complet al Butlletí Oficial del Principat d'Andorra"
+      },
+      "normativa": {
+        "title": "Normativa",
+        "description": "Portal Jurídic amb totes les lleis i reglaments"
+      },
+      "news": {
+        "title": "Notícies",
+        "description": "Agregador de notícies dels mitjans andorrans"
+      },
+      "irpf": {
+        "title": "Calculadora IRPF",
+        "description": "Calcula els teus impostos amb les tarifes oficials"
+      },
+      "ai": {
+        "title": "Cercador IA",
+        "description": "Pregunta qualsevol cosa sobre la normativa andorrana"
+      },
+      "finance": {
+        "title": "Finances",
+        "description": "Mercats, divises i criptomonedes en temps real"
+      }
+    }
+  },
+  "auth": {
+    "signIn": "Iniciar sessió",
+    "signOut": "Tancar sessió",
+    "signUp": "Registrar-se",
+    "email": "Correu electrònic",
+    "password": "Contrasenya",
+    "forgotPassword": "Has oblidat la contrasenya?",
+    "rememberMe": "Recorda'm",
+    "or": "o",
+    "continueWith": "Continua amb {provider}",
+    "magicLink": "Enllaç màgic",
+    "magicLinkSent": "T'hem enviat un enllaç màgic al correu"
+  }
+}
