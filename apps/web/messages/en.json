@@ -1,0 +1,81 @@
+{
+  "navigation": {
+    "home": "Home",
+    "bopa": "BOPA",
+    "normativa": "Regulations",
+    "noticias": "News",
+    "clima": "Weather",
+    "finanzas": "Finance",
+    "cripto": "Crypto",
+    "irpf": "IRPF",
+    "buscador": "AI Search",
+    "admin": "Admin",
+    "login": "Login",
+    "logout": "Logout",
+    "profile": "Profile"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "import": "Import",
+    "language": "Language",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "home": {
+    "title": "Andorra Economic Portal",
+    "subtitle": "Your source for economic and legal information from Andorra",
+    "hero": {
+      "title": "All Andorra information in one place",
+      "description": "Access BOPA, regulations, news, finance and IRPF calculator with the power of artificial intelligence"
+    },
+    "features": {
+      "bopa": {
+        "title": "BOPA",
+        "description": "Complete access to the Official Bulletin of the Principality of Andorra"
+      },
+      "normativa": {
+        "title": "Regulations",
+        "description": "Legal Portal with all laws and regulations"
+      },
+      "news": {
+        "title": "News",
+        "description": "News aggregator from Andorran media"
+      },
+      "irpf": {
+        "title": "IRPF Calculator",
+        "description": "Calculate your taxes with official rates"
+      },
+      "ai": {
+        "title": "AI Search",
+        "description": "Ask anything about Andorran regulations"
+      },
+      "finance": {
+        "title": "Finance",
+        "description": "Markets, currencies and cryptocurrencies in real time"
+      }
+    }
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "signUp": "Sign up",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "rememberMe": "Remember me",
+    "or": "or",
+    "continueWith": "Continue with {provider}",
+    "magicLink": "Magic link",
+    "magicLinkSent": "We've sent you a magic link via email"
+  }
+}
