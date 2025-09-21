@@ -1,0 +1,81 @@
+{
+  "navigation": {
+    "home": "Inicio",
+    "bopa": "BOPA",
+    "normativa": "Normativa",
+    "noticias": "Noticias",
+    "clima": "Clima",
+    "finanzas": "Finanzas",
+    "cripto": "Cripto",
+    "irpf": "IRPF",
+    "buscador": "Buscador IA",
+    "admin": "Admin",
+    "login": "Entrar",
+    "logout": "Salir",
+    "profile": "Perfil"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "export": "Exportar",
+    "import": "Importar",
+    "language": "Idioma",
+    "theme": "Tema",
+    "light": "Claro",
+    "dark": "Oscuro"
+  },
+  "home": {
+    "title": "Portal Económico de Andorra",
+    "subtitle": "Tu fuente de información económica y legal de Andorra",
+    "hero": {
+      "title": "Toda la información de Andorra en un solo lugar",
+      "description": "Accede al BOPA, normativa, noticias, finanzas y calculadora IRPF con el poder de la inteligencia artificial"
+    },
+    "features": {
+      "bopa": {
+        "title": "BOPA",
+        "description": "Acceso completo al Boletín Oficial del Principado de Andorra"
+      },
+      "normativa": {
+        "title": "Normativa",
+        "description": "Portal Jurídico con todas las leyes y reglamentos"
+      },
+      "news": {
+        "title": "Noticias",
+        "description": "Agregador de noticias de los medios andorranos"
+      },
+      "irpf": {
+        "title": "Calculadora IRPF",
+        "description": "Calcula tus impuestos con las tarifas oficiales"
+      },
+      "ai": {
+        "title": "Buscador IA",
+        "description": "Pregunta cualquier cosa sobre la normativa andorrana"
+      },
+      "finance": {
+        "title": "Finanzas",
+        "description": "Mercados, divisas y criptomonedas en tiempo real"
+      }
+    }
+  },
+  "auth": {
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión",
+    "signUp": "Registrarse",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "forgotPassword": "¿Has olvidado la contraseña?",
+    "rememberMe": "Recuérdame",
+    "or": "o",
+    "continueWith": "Continúa con {provider}",
+    "magicLink": "Enlace mágico",
+    "magicLinkSent": "Te hemos enviado un enlace mágico al correo"
+  }
+}
