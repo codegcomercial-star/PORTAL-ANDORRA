@@ -1,35 +1,35 @@
-// Rate limiting utility for API endpoints
-export interface RateLimitResult {
-  success: boolean;
-  retryAfter?: number;
-  remaining?: number;
-  resetTime?: number;
+export type RateResult = { ok: boolean; remaining: number; reset: number };
+
+type Bucket = {count:number; reset:number};
+const BUCKET = new Map<string,Bucket>();
+
+function run(limit:number, windowMs:number, key:string): RateResult {
+  const now = Date.now(); 
+  const b = BUCKET.get(key);
+  
+  if(!b || b.reset < now){ 
+    const reset=now+windowMs; 
+    BUCKET.set(key,{count:1,reset}); 
+    return {ok:true,remaining:limit-1,reset}; 
+  }
+  
+  if(b.count >= limit) return {ok:false,remaining:0,reset:b.reset};
+  
+  b.count++; 
+  return {ok:true,remaining:limit-b.count,reset:b.reset};
 }
 
-/**
- * Simple rate limiter implementation
- * @param identifier - Unique identifier (IP, user ID, etc.)
- * @param limit - Maximum requests allowed
- * @param windowMs - Time window in milliseconds
+/** Rate limiting with multiple overloads:
+ * const allow = rateLimit({limit:60, windowSec:60}); await allow(ip);
+ * await rateLimit({limit:60, windowSec:60}, ip);
+ * await rateLimit(undefined, ip); // 60/60 por defecto
  */
-export async function rateLimit(
-  identifier: string, 
-  limit: number, 
-  windowMs: number
-): Promise<RateLimitResult> {
-  // Mock implementation - in production use Redis or memory store
-  return {
-    success: true,
-    remaining: limit - 1,
-    resetTime: Date.now() + windowMs
-  };
+export function rateLimit(): (key:string)=>Promise<RateResult>;
+export function rateLimit(opts: {limit:number; windowSec:number}): (key:string)=>Promise<RateResult>;
+export function rateLimit(opts: {limit:number; windowSec:number} | undefined, key: string): Promise<RateResult>;
+export function rateLimit(opts?: {limit:number; windowSec:number}, key?: string): any {
+  const limit = opts?.limit ?? 60; 
+  const windowMs = (opts?.windowSec ?? 60)*1000;
+  const fn = async (k:string)=>run(limit, windowMs, k);
+  return typeof key === 'string' ? fn(key) : fn;
 }
-
-/**
- * Rate limiter with different tiers
- */
-export const rateLimiters = {
-  strict: (id: string) => rateLimit(id, 10, 60000),    // 10 per minute
-  normal: (id: string) => rateLimit(id, 50, 60000),    // 50 per minute  
-  generous: (id: string) => rateLimit(id, 100, 60000), // 100 per minute
-};

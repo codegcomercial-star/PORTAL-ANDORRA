@@ -1,53 +1,117 @@
-# Portal Andorra
+# 🇦🇩 Portal Andorra — Super Prompt Fusion
 
-Portal Econòmic d'Andorra - Una plataforma completa per accedir a informació econòmica i legal d'Andorra.
+**Portal integral del Principat d'Andorra amb Intel·ligència Artificial avançada**
 
-## 🚀 Característiques
+[![Deploy](https://github.com/codegcomercial-star/PORTAL-ANDORRA/workflows/deploy-vercel/badge.svg)](https://github.com/codegcomercial-star/PORTAL-ANDORRA/actions)
+[![Auto Ingest](https://github.com/codegcomercial-star/PORTAL-ANDORRA/workflows/cron-news/badge.svg)](https://github.com/codegcomercial-star/PORTAL-ANDORRA/actions)
+[![Tests](https://img.shields.io/badge/tests-34%2F34-brightgreen.svg)](./test-system-complete.sh)
 
-- **BOPA**: Accés complet al Butlletí Oficial del Principat d'Andorra
-- **Normativa**: Portal Jurídic amb totes les lleis i reglaments
-- **Notícies**: Agregador de notícies dels mitjans andorrans
-- **Clima**: Predicció meteorològica per Andorra
-- **Finances**: Mercats, divises i criptomonedes en temps real
-- **Calculadora IRPF**: Calcula els teus impostos amb les tarifes oficials
-- **Cercador IA**: Pregunta qualsevol cosa sobre la normativa andorrana
-- **Multiidioma**: Català, Espanyol, Anglès i Francès
+## 🎯 **Visió General**
 
-## 📋 Requisits previs
+El Portal Andorra Super Prompt Fusion és un sistema integral automatitzat que agrega, processa i presenta informació del Principat d'Andorra utilitzant Intel·ligència Artificial avançada. **Zero manteniment manual requerit**.
 
-- Node.js 18.0.0 o superior
-- pnpm 8.0.0 o superior
-- Docker i Docker Compose
-- PostgreSQL amb extensió pgvector
+### ✨ **Funcionalitats Principals**
 
-## 🛠️ Configuració del desenvolupament
+🤖 **AUTOMATITZACIÓ TOTAL**
+- Ingesta automàtica cada 15 minuts via GitHub Actions
+- Deploy automàtic a Vercel en cada push
+- Auto-aprovació de PRs amb workflows intel·ligents
 
-### 1. Clona el repositori
+📰 **SISTEMA DE NOTÍCIES + IA**
+- Agregació RSS de 7 fonts oficials (Diari d'Andorra, Bondia, CNN, etc.)
+- Anàlisi de sentiment automàtic
+- Categorització i etiquetatge intel·ligent
+- Suport multiidioma (ca, es, en, fr)
+
+🏛️ **SCRAPING BOPA OFICIAL**
+- Accés automatitzat al Butlletí Oficial del Principat d'Andorra
+- Classificació per tipus: lleis, decrets, resolucions, anuncis
+- Extracció intel·ligent de contingut i metadades
+- Motor de cerca avançat per documents oficials
+
+🏠 **IMMOBILIÀRIA + IA**
+- Scraping de 4 immobiliàries principals d'Andorra
+- Anàlisi de preus amb Intel·ligència Artificial
+- Comparativa de mercat automatitzada
+- Intel·ligència de barris i valoracions
+
+💼 **FEINA + MATCHING IA**
+- Agregació de 4 plataformes de feina principals
+- Sistema de matching candidat-oferta amb IA
+- Anàlisi de skills i gap detection
+- Recomanacions de carrera personalitzades
+
+🔍 **CERCA UNIVERSAL**
+- Motor de cerca unificat cross-platform
+- Scoring de rellevància amb IA
+- Cerca semàntica avançada
+- Facetes i suggeriments intel·ligents
+
+## � **Configuració Ràpida**
+
+### **Opció 1: Configuració Automàtica (Recomanada)**
 
 ```bash
-git clone <repository-url>
+# Clona el repositori
+git clone https://github.com/codegcomercial-star/PORTAL-ANDORRA.git
 cd PORTAL-ANDORRA
-```
 
-### 2. Instal·la les dependències
-
-```bash
+# Instal·la dependències
 pnpm install
+
+# Executa configuració completa automàtica
+./setup-complete.sh
 ```
 
-### 3. Configura l'entorn
+### **Opció 2: Configuració Manual**
+
+#### **Requisits Previs**
+- Node.js 18.0.0+ i pnpm 8.0.0+
+- PostgreSQL o Vercel Postgres
+- Compte GitHub i Vercel
+
+#### **Passos Manuals**
 
 ```bash
-cp .env.example .env
+# 1. Dependències
+pnpm install
+
+# 2. Variables d'entorn
+cp .env.example .env.local
+# Edita .env.local amb les teves configuracions
+
+# 3. Base de dades
+./setup-database.sh
+
+# 4. GitHub Actions
+./setup-github-actions.sh
+
+# 5. Tests de verificació
+./test-system-complete.sh
+
+# 6. Desenvolupament local
+pnpm dev
 ```
 
-Edita el fitxer `.env` amb les teves configuracions.
+## 📋 **Variables d'Entorn Requerides**
 
-### 4. Inicia els serveis amb Docker
-
-```bash
-pnpm docker:up
+### **Producció (GitHub Secrets)**
+```env
+VERCEL_TOKEN=your_vercel_token
+VERCEL_ORG_ID=your_vercel_org_id
+VERCEL_PROJECT_ID=your_vercel_project_id
+BASE_URL=https://portal-andorra.vercel.app
+INGEST_TOKEN=super-secret-ingest-token-2024
 ```
+
+### **Desenvolupament (.env.local)**
+```env
+DATABASE_URL=postgresql://user:pass@localhost:5432/portal_andorra
+BASE_URL=http://localhost:3000
+INGEST_TOKEN=dev-ingest-token-local-only
+```
+
+**📚 Guia completa**: [docs/GITHUB_SECRETS_GUIDE.md](./docs/GITHUB_SECRETS_GUIDE.md)
 
 Això iniciarà:
 - PostgreSQL amb pgvector a `localhost:5432`

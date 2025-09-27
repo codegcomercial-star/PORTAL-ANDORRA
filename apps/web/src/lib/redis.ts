@@ -1,56 +1,38 @@
-// Mock Redis client for development
+type Json = string|number|boolean|null|{[k:string]:Json}|Json[];
+
+const store = new Map<string,{v:Json; exp?:number}>();
+
 export const redis = {
-  // Basic operations
-  get: async (key: string): Promise<string | null> => {
-    console.log(`Redis GET: ${key}`);
-    return null;
+  async get<T=Json>(k:string): Promise<T|null> {
+    const it = store.get(k); 
+    if(!it) return null;
+    if(it.exp && it.exp < Date.now()){ 
+      store.delete(k); 
+      return null; 
+    }
+    return it.v as T;
   },
   
-  set: async (key: string, value: string): Promise<string> => {
-    console.log(`Redis SET: ${key} = ${value}`);
-    return 'OK';
+  async set(k:string, v:Json, opts?:{ex?:number}) {
+    const exp = opts?.ex ? Date.now()+opts.ex*1000 : undefined;
+    store.set(k,{v,exp});
   },
   
-  setex: async (key: string, seconds: number, value: string): Promise<string> => {
-    console.log(`Redis SETEX: ${key} = ${value} (TTL: ${seconds}s)`);
-    return 'OK';
+  async del(k:string) {
+    store.delete(k);
   },
   
-  del: async (key: string): Promise<number> => {
-    console.log(`Redis DEL: ${key}`);
-    return 1;
+  async setex(k:string, seconds:number, v:Json) {
+    await this.set(k, v, {ex: seconds});
   },
   
-  // Hash operations
-  hget: async (key: string, field: string): Promise<string | null> => {
-    console.log(`Redis HGET: ${key}.${field}`);
-    return null;
-  },
-  
-  hset: async (key: string, field: string, value: string): Promise<number> => {
-    console.log(`Redis HSET: ${key}.${field} = ${value}`);
-    return 1;
-  },
-  
-  // List operations
-  lpush: async (key: string, ...values: string[]): Promise<number> => {
-    console.log(`Redis LPUSH: ${key} <- [${values.join(', ')}]`);
-    return values.length;
-  },
-  
-  lrange: async (key: string, start: number, stop: number): Promise<string[]> => {
-    console.log(`Redis LRANGE: ${key}[${start}:${stop}]`);
-    return [];
-  },
-  
-  // Utility operations
-  exists: async (key: string): Promise<number> => {
-    console.log(`Redis EXISTS: ${key}`);
-    return 0;
-  },
-  
-  expire: async (key: string, seconds: number): Promise<number> => {
-    console.log(`Redis EXPIRE: ${key} (TTL: ${seconds}s)`);
-    return 1;
+  async exists(k:string): Promise<boolean> {
+    const it = store.get(k);
+    if (!it) return false;
+    if (it.exp && it.exp < Date.now()) {
+      store.delete(k);
+      return false;
+    }
+    return true;
   }
 };

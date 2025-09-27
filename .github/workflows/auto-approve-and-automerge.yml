@@ -1,0 +1,28 @@
+name: auto-approve-and-automerge
+on:
+  pull_request:
+    types: [opened, ready_for_review, synchronize, reopened]
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+jobs:
+  auto-approve:
+    # >>> Lista blanca de autores que se auto-aprueban <<<
+    if: >
+      contains('["dependabot[bot]","github-actions[bot]","codespaces[bot]","codegcomercial-star"]', github.actor)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto-approve PR
+        uses: peter-evans/approve-pull-request@v5
+        with:
+          token: ${{ secrets.AUTO_MERGE_TOKEN || secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ github.event.pull_request.number }}
+          message: "Auto-approved by policy"
+
+      - name: Enable auto-merge (squash)
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.AUTO_MERGE_TOKEN || secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: squash

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 // Simulamos una base de datos de noticias
 const articles = {
   'economia-creixement-2024': {

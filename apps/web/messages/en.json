@@ -24,6 +24,24 @@
     "loading": "Loading...",
     "error": "Error"
   },
-  "SearchPage": "Search",
-  "TermesPage": "Terms"
+  "SearchPage": {
+    "title": "AI Search",
+    "subtitle": "Search information with artificial intelligence",
+    "description": "Use our intelligent search engine to find specific information about regulations, BOPA and more."
+  },
+  "TermesPage": {
+    "title": "Terms of Use",
+    "subtitle": "Service conditions",
+    "description": "Terms and conditions for using our services."
+  },
+  "CriptoPage": {
+    "title": "Cryptocurrencies",
+    "subtitle": "Crypto market",
+    "description": "Cryptocurrency and blockchain tracking in Andorra."
+  },
+  "IRPFPage": {
+    "title": "IRPF Calculator",
+    "subtitle": "Calculate your taxes in Andorra",
+    "description": "Official tool to calculate Personal Income Tax in Andorra."
+  }
 }

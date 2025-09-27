@@ -1,58 +1,98 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { universalSearchService } from '@/lib/search';
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const query = searchParams.get('q') || '';
-  const semantic = searchParams.get('semantic') === 'true';
-  const page = parseInt(searchParams.get('page') || '1');
-  const limit = parseInt(searchParams.get('limit') || '10');
+  try {
+    const { searchParams } = new URL(request.url);
+    
+    // Parse query parameters
+    const query = searchParams.get('q') || searchParams.get('query') || '';
+    const types = searchParams.get('types')?.split(',') as any[] || undefined;
+    const sources = searchParams.get('sources')?.split(',') || undefined;
+    const sortBy = searchParams.get('sortBy') as any || 'relevance';
+    const sortOrder = searchParams.get('sortOrder') as any || 'desc';
+    const limit = parseInt(searchParams.get('limit') || '20');
+    const offset = parseInt(searchParams.get('offset') || '0');
+    
+    // Parse date filters
+    const dateFrom = searchParams.get('dateFrom') ? new Date(searchParams.get('dateFrom')!) : undefined;
+    const dateTo = searchParams.get('dateTo') ? new Date(searchParams.get('dateTo')!) : undefined;
 
-  // Mock search results for now
-  const mockResults = {
-    results: [
-      {
-        id: '1',
-        title: 'Llei 19/2020, del 17 de desembre, de modificació de la Llei general tributària',
-        content: 'Aquesta llei modifica diversos aspectes de la tributació a Andorra...',
-        url: 'https://www.bopa.ad/bopa/019020/Pagines/LT19-2020.aspx',
-        type: 'law',
-        score: 0.95,
-        publishedAt: '2020-12-17',
-      },
-      {
-        id: '2',
-        title: 'BOPA núm. 64 del 17 de desembre de 2020',
-        content: 'Butlletí oficial amb les noves disposicions tributàries...',
-        url: 'https://www.bopa.ad/bopa/064020/Pagines/default.aspx',
-        type: 'bulletin',
-        score: 0.87,
-        publishedAt: '2020-12-17',
-      },
-    ],
-    total: 2,
-    page,
-    limit,
-    semantic,
-    query,
-    processingTime: 45,
-  };
+    if (!query.trim()) {
+      return NextResponse.json(
+        { error: 'Query parameter is required' },
+        { status: 400 }
+      );
+    }
 
-  return NextResponse.json(mockResults);
+    if (query.length < 2) {
+      return NextResponse.json(
+        { error: 'Query must be at least 2 characters long' },
+        { status: 400 }
+      );
+    }
+
+    // Perform universal search
+    const searchResult = await universalSearchService.search({
+      query,
+      types,
+      sources,
+      dateFrom,
+      dateTo,
+      sortBy,
+      sortOrder,
+      limit,
+      offset,
+    });
+
+    return NextResponse.json({
+      success: true,
+      query,
+      ...searchResult,
+    });
+
+  } catch (error) {
+    console.error('Search API error:', error);
+    
+    return NextResponse.json(
+      { 
+        error: 'Search failed',
+        message: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
+  }
 }
 
+// POST endpoint for advanced search with complex filters
 export async function POST(request: NextRequest) {
-  const body = await request.json();
-  const { query, filters, semantic = false } = body;
+  try {
+    const searchQuery = await request.json();
+    
+    if (!searchQuery.query?.trim()) {
+      return NextResponse.json(
+        { error: 'Query is required' },
+        { status: 400 }
+      );
+    }
 
-  // Mock advanced search
-  const mockResults = {
-    results: [],
-    total: 0,
-    query,
-    filters,
-    semantic,
-    processingTime: 23,
-  };
+    // Perform universal search with advanced filters
+    const searchResult = await universalSearchService.search(searchQuery);
 
-  return NextResponse.json(mockResults);
+    return NextResponse.json({
+      success: true,
+      ...searchResult,
+    });
+
+  } catch (error) {
+    console.error('Advanced search API error:', error);
+    
+    return NextResponse.json(
+      { 
+        error: 'Advanced search failed',
+        message: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
+  }
 }

@@ -24,6 +24,24 @@
     "loading": "Carregant...",
     "error": "Error"
   },
-  "SearchPage": "Cercar",
-  "TermesPage": "Termes"
+  "SearchPage": {
+    "title": "Cercador IA",
+    "subtitle": "Cerca informació amb intel·ligència artificial",
+    "description": "Utilitza el nostre cercador intel·ligent per trobar informació específica sobre normativa, BOPA i més."
+  },
+  "TermesPage": {
+    "title": "Termes d'Ús",
+    "subtitle": "Condicions de servei",
+    "description": "Termes i condicions per a l'ús dels nostres serveis."
+  },
+  "CriptoPage": {
+    "title": "Criptomonedes",
+    "subtitle": "Mercat cripto",
+    "description": "Seguiment de criptomonedes i blockchain a Andorra."
+  },
+  "IRPFPage": {
+    "title": "Calculadora IRPF",
+    "subtitle": "Calcula els teus impostos a Andorra",
+    "description": "Eina oficial per calcular l'Impost sobre la Renda de les Persones Físiques a Andorra."
+  }
 }

@@ -24,6 +24,24 @@
     "loading": "Chargement...",
     "error": "Erreur"
   },
-  "SearchPage": "Recherche",
-  "TermesPage": "Termes"
+  "SearchPage": {
+    "title": "Recherche IA",
+    "subtitle": "Rechercher des informations avec l'intelligence artificielle",
+    "description": "Utilisez notre moteur de recherche intelligent pour trouver des informations spécifiques sur la réglementation, BOPA et plus."
+  },
+  "TermesPage": {
+    "title": "Conditions d'utilisation",
+    "subtitle": "Conditions de service",
+    "description": "Termes et conditions pour l'utilisation de nos services."
+  },
+  "CriptoPage": {
+    "title": "Cryptomonnaies",
+    "subtitle": "Marché crypto",
+    "description": "Suivi des cryptomonnaies et blockchain en Andorre."
+  },
+  "IRPFPage": {
+    "title": "Calculatrice IRPF",
+    "subtitle": "Calculez vos impôts en Andorre",
+    "description": "Outil officiel pour calculer l'Impôt sur le Revenu des Personnes Physiques en Andorre."
+  }
 }
