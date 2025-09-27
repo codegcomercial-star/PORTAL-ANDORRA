@@ -44,7 +44,7 @@ Com obtenir-lo:
 
 ### **BASE_URL**
 ```
-Valor: https://portal-andorra.vercel.app
+Valor: https://web-inky-alpha-95.vercel.app
 Descripció: URL base del portal en producció
 ```
 
@@ -90,9 +90,9 @@ Com obtenir-lo: https://console.anthropic.com/
 
 ```env
 NODE_ENV=production
-BASE_URL=https://portal-andorra.vercel.app
+BASE_URL=https://web-inky-alpha-95.vercel.app
 INGEST_TOKEN=super-secret-ingest-token-2024-portal-andorra
-NEXTAUTH_URL=https://portal-andorra.vercel.app
+NEXTAUTH_URL=https://web-inky-alpha-95.vercel.app
 NEXTAUTH_SECRET=super-secret-nextauth-key-2024-andorra-portal-secure
 DEFAULT_LOCALE=ca
 SUPPORTED_LOCALES=ca,es,en,fr

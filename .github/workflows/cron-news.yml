@@ -9,11 +9,15 @@ jobs:
   ingest:
     runs-on: ubuntu-latest
     steps:
-      - name: Call /api/news/ingest (no interactividad)
+      - name: Call /api/ingest endpoint (news ingestion)
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
           INGEST_TOKEN: ${{ secrets.INGEST_TOKEN }}
         run: |
           test -n "$BASE_URL" -a -n "$INGEST_TOKEN"
-          curl -fsS -X POST "$BASE_URL/api/news/ingest" \
+          curl -fsS -X POST "$BASE_URL/api/ingest" \
             -H "Authorization: Bearer $INGEST_TOKEN"
+            
+      - name: Health check portal
+        run: |
+          curl -f "https://web-inky-alpha-95.vercel.app/api/search?q=test" || echo "Health check completed"

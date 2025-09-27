@@ -100,7 +100,7 @@ pnpm dev
 VERCEL_TOKEN=your_vercel_token
 VERCEL_ORG_ID=your_vercel_org_id
 VERCEL_PROJECT_ID=your_vercel_project_id
-BASE_URL=https://portal-andorra.vercel.app
+BASE_URL=https://web-inky-alpha-95.vercel.app
 INGEST_TOKEN=super-secret-ingest-token-2024
 ```
 
