@@ -9,13 +9,13 @@ jobs:
   ingest:
     runs-on: ubuntu-latest
     steps:
-      - name: Call /api/ingest endpoint (news ingestion)
+      - name: Call /api/news/ingest endpoint (news ingestion)
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
           INGEST_TOKEN: ${{ secrets.INGEST_TOKEN }}
         run: |
           test -n "$BASE_URL" -a -n "$INGEST_TOKEN"
-          curl -fsS -X POST "$BASE_URL/api/ingest" \
+          curl -fsS -X POST "$BASE_URL/api/news/ingest" \
             -H "Authorization: Bearer $INGEST_TOKEN"
             
       - name: Health check portal
