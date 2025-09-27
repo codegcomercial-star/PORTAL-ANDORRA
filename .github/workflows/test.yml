@@ -1,4 +1,4 @@
-name: Test Portal Andorra
+name: "Test Portal Andorra"
 
 on:
   push:
@@ -79,4 +79,4 @@ jobs:
       - name: Run Lighthouse CI
         run: cd apps/web && npx lhci autorun
         env:
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN || 'mock-token' }}

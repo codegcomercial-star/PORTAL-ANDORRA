@@ -1,15 +1,29 @@
 {
   "home": {
     "title": "Portal Andorra",
-    "description": "Tu portal para servicios andorranos"
+    "description": "Votre portail andorran"
   },
   "navigation": {
-    "home": "Inicio",
-    "search": "Buscar",
-    "services": "Servicios"
+    "home": "Accueil",
+    "bopa": "BOPA",
+    "normativa": "Réglementation",
+    "noticias": "Nouvelles",
+    "clima": "Météo",
+    "finanzas": "Finance",
+    "cripto": "Crypto",
+    "irpf": "IRPF",
+    "buscador": "Recherche IA",
+    "admin": "Admin",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "profile": "Profil",
+    "search": "Recherche",
+    "services": "Services"
   },
   "common": {
-    "loading": "Cargando...",
-    "error": "Error"
-  }
+    "loading": "Chargement...",
+    "error": "Erreur"
+  },
+  "SearchPage": "Recherche",
+  "TermesPage": "Termes"
 }

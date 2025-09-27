@@ -1,12 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
-import type { 
-  IRPFCalculationInput, 
-  IRPFCalculationResult 
-} from '../../../../types/irpf';
-import { 
-  ANDORRA_IRPF_BRACKETS, 
-  ANDORRA_DEDUCTIONS 
-} from '../../../../types/irpf';
+
+// Definiciones locales para evitar errores de importación
+interface IRPFBracket {
+  min: number;
+  max: number | null;
+  rate: number;
+}
+
+const ANDORRA_IRPF_BRACKETS: IRPFBracket[] = [
+  { min: 0, max: 24000, rate: 0 },
+  { min: 24000, max: 40000, rate: 0.05 },
+  { min: 40000, max: null, rate: 0.10 }
+];
+
+const ANDORRA_DEDUCTIONS = {
+  personal: 9000,
+  spouse: 9000,
+  children: 3000,
+  elderly: 1500,
+  disability: 3000
+};
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -25,7 +38,7 @@ export async function POST(request: NextRequest) {
   const dependentsDeduction = dependents * 6000;
   const otherDeductions = typeof deductions === 'number' ? deductions : Object.values(deductions || {}).reduce((sum: number, value: any) => sum + (Number(value) || 0), 0);
   
-  const taxableIncome = Math.max(0, totalIncome - personalDeduction - dependentsDeduction - otherDeductions);
+  const taxableIncome = Math.max(0, totalIncome - personalDeduction - dependentsDeduction - Number(otherDeductions));
   
   // Andorra IRPF brackets (simplified)
   let taxOwed = 0;

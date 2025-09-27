@@ -1,19 +1,41 @@
-i// import { getServerSession } from 'next-auth';
-// import { authOptions } from '@/lib/auth';
-// import { prisma } from '@/lib/prisma';
-// import { redis } from '@/lib/redis';
+import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-// import { rateLimit } from '@/lib/rate-limit';
-import { prisma, redis, rateLimit } from '@/lib/dummy-modules';
 
-const getServerSession = async () => null;
-const authOptions = {};{ NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-// import { prisma } from '@/lib/prisma';
-import { redis } from '@/lib/redis';
-import { z } from 'zod';
-import { rateLimit } from '@/lib/rate-limit';
+// Mock functions for missing dependencies  
+const getServerSession = async (options?: any) => null;
+const authOptions = {};
+
+// Mock implementations with correct signatures
+const prisma = {
+  searchHistory: {
+    create: async (data: any) => ({ id: 'mock', ...data.data }),
+    findMany: async (options: any) => []
+  },
+  law: {
+    findMany: async (options: any) => []
+  },
+  organization: {
+    findMany: async (options: any) => []
+  },
+  weatherSnapshot: {
+    findFirst: async (options: any) => null
+  },
+  article: {
+    findMany: async (options: any) => []
+  }
+};
+
+const redis = {
+  get: async (key: string) => null,
+  setex: async (key: string, ttl: number, value: string) => true,
+  set: async (key: string, value: string) => true,
+  del: async (key: string) => 1
+};
+
+const rateLimit = async (identifier: string, limit: number, window: number) => ({
+  success: true,
+  retryAfter: 0
+});
 
 // AI Search API - Multiple providers with fallback
 const aiSearchSchema = z.object({
@@ -166,7 +188,7 @@ class AISearchService {
         };
 
         // Cache successful response
-        await redis.setex(cacheKey, this.CACHE_TTL, JSON.stringify(result));
+        await redis.set(cacheKey, JSON.stringify(result));
 
         // Log search if user provided
         if (userId) {
@@ -329,7 +351,7 @@ export async function POST(request: NextRequest) {
     
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { success: false, error: 'Invalid request parameters', details: error.errors },
+        { success: false, error: 'Invalid request parameters', details: error.issues },
         { status: 400 }
       );
     }
