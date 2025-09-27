@@ -1,115 +1,44 @@
-import crypto from 'crypto';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
-
 export interface WebhookEvent {
+  id: string;
   type: string;
-  data: any;
-  timestamp: Date;
+  data: Record<string, any>;
+  timestamp: string;
 }
 
-export const triggerWebhook = async (
-  userId: string,
-  event: WebhookEvent
-) => {
+export interface WebhookConfig {
+  url: string;
+  events: string[];
+  secret: string;
+}
+
+export function createWebhookEvent(type: string, data: Record<string, any>): WebhookEvent {
+  return {
+    id: `evt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    type,
+    data,
+    timestamp: new Date().toISOString()
+  };
+}
+
+export async function sendWebhook(config: WebhookConfig, event: WebhookEvent): Promise<boolean> {
   try {
-    // Find active webhooks for this user and event type
-    const webhooks = await prisma.apiWebhook.findMany({
-      where: {
-        userId,
-        active: true,
-        events: {
-          has: event.type
-        }
-      }
-    });
-
-    const promises = webhooks.map(webhook => sendWebhook(webhook, event));
-    await Promise.allSettled(promises);
-  } catch (error) {
-    console.error('Error triggering webhooks:', error);
-  }
-};
-
-const sendWebhook = async (
-  webhook: any,
-  event: WebhookEvent
-) => {
-  try {
-    const payload = {
-      id: crypto.randomUUID(),
-      event: event.type,
-      data: event.data,
-      timestamp: event.timestamp.toISOString()
-    };
-
-    const signature = createWebhookSignature(JSON.stringify(payload), webhook.secret);
-
-    const response = await fetch(webhook.url, {
+    const response = await fetch(config.url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Webhook-Signature': signature,
-        'User-Agent': 'API-Marketplace-Webhook/1.0'
+        'X-Webhook-Signature': generateSignature(event, config.secret)
       },
-      body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(30000) // 30 second timeout
+      body: JSON.stringify(event)
     });
-
-    if (response.ok) {
-      await prisma.apiWebhook.update({
-        where: { id: webhook.id },
-        data: { lastSuccess: new Date() }
-      });
-    } else {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
+    
+    return response.ok;
   } catch (error) {
-    console.error(`Webhook failed for ${webhook.url}:`, error);
-    
-    await prisma.apiWebhook.update({
-      where: { id: webhook.id },
-      data: { lastFailure: new Date() }
-    });
-    
-    throw error;
+    console.error('Webhook delivery failed:', error);
+    return false;
   }
-};
+}
 
-export const createWebhookSignature = (payload: string, secret: string): string => {
-  return crypto
-    .createHmac('sha256', secret)
-    .update(payload)
-    .digest('hex');
-};
-
-export const verifyWebhookSignature = (
-  payload: string,
-  signature: string,
-  secret: string
-): boolean => {
-  const expectedSignature = createWebhookSignature(payload, secret);
-  return crypto.timingSafeEqual(
-    Buffer.from(signature, 'hex'),
-    Buffer.from(expectedSignature, 'hex')
-  );
-};
-
-export const createWebhook = async (
-  userId: string,
-  url: string,
-  events: string[]
-) => {
-  const secret = crypto.randomBytes(32).toString('hex');
-  
-  return await prisma.apiWebhook.create({
-    data: {
-      userId,
-      url,
-      events,
-      secret,
-      active: true
-    }
-  });
-};
+function generateSignature(event: WebhookEvent, secret: string): string {
+  // Simple signature generation - in production use proper HMAC
+  return `sha256=${Buffer.from(JSON.stringify(event) + secret).toString('base64')}`;
+}

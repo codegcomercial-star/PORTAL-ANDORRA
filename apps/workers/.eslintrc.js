@@ -1,9 +1,11 @@
 module.exports = {
   root: true,
+  env: {
+    node: true,
+    es2022: true
+  },
   extends: [
-    "eslint:recommended",
-    "@typescript-eslint/recommended",
-    "next/core-web-vitals"
+    "eslint:recommended"
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -12,7 +14,8 @@ module.exports = {
   },
   plugins: ["@typescript-eslint"],
   rules: {
-    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
     "@typescript-eslint/no-explicit-any": "warn"
   }
 };

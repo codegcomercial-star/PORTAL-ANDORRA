@@ -1,82 +1,35 @@
-import Stripe from 'stripe';
-import { PrismaClient } from '@prisma/client';
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16',
-});
-
-const prisma = new PrismaClient();
-
-export interface BillingCalculation {
-  baseCost: number;
-  usage: number;
-  overageCost: number;
-  totalCost: number;
+export interface BillingRecord {
+  id: string;
+  userId: string;
+  amount: number;
+  currency: string;
+  status: 'pending' | 'completed' | 'failed';
+  createdAt: string;
 }
 
-export const calculateBilling = async (
-  apiKeyId: string,
-  billingPeriodStart: Date,
-  billingPeriodEnd: Date
-): Promise<BillingCalculation> => {
-  try {
-    // Get API usage for the billing period
-    const usage = await prisma.apiUsage.findMany({
-      where: {
-        apiKeyId,
-        timestamp: {
-          gte: billingPeriodStart,
-          lte: billingPeriodEnd
-        }
-      }
-    });
+export interface PricingTier {
+  name: string;
+  pricePerRequest: number;
+  monthlyLimit: number;
+}
 
-    const totalRequests = usage.length;
-    const totalCost = usage.reduce((sum, record) => sum + Number(record.cost), 0);
+export const PRICING_TIERS: PricingTier[] = [
+  { name: 'Basic', pricePerRequest: 0.01, monthlyLimit: 1000 },
+  { name: 'Pro', pricePerRequest: 0.008, monthlyLimit: 10000 },
+  { name: 'Enterprise', pricePerRequest: 0.005, monthlyLimit: 100000 }
+];
 
-    // Get subscription details
-    const subscriptions = await prisma.apiSubscription.findMany({
-      where: { apiKeyId, active: true }
-    });
+export function calculateBill(usage: number, tier: PricingTier): number {
+  return Math.min(usage, tier.monthlyLimit) * tier.pricePerRequest;
+}
 
-    let baseCost = 0;
-    let overageCost = 0;
-
-    for (const subscription of subscriptions) {
-      if (totalRequests > subscription.requestLimit) {
-        const overage = totalRequests - subscription.requestLimit;
-        overageCost += overage * Number(subscription.pricePerRequest);
-      }
-    }
-
-    return {
-      baseCost,
-      usage: totalRequests,
-      overageCost,
-      totalCost: baseCost + overageCost + totalCost
-    };
-  } catch (error) {
-    console.error('Error calculating billing:', error);
-    throw error;
-  }
-};
-
-export const createStripePaymentIntent = async (
-  amount: number,
-  currency: string = 'eur',
-  metadata: Record<string, string> = {}
-) => {
-  try {
-    return await stripe.paymentIntents.create({
-      amount: Math.round(amount * 100), // Convert to cents
-      currency,
-      metadata,
-      automatic_payment_methods: {
-        enabled: true,
-      },
-    });
-  } catch (error) {
-    console.error('Error creating Stripe payment intent:', error);
-    throw error;
-  }
-};
+export function createBillingRecord(userId: string, amount: number): BillingRecord {
+  return {
+    id: `bill_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    userId,
+    amount,
+    currency: 'EUR',
+    status: 'pending',
+    createdAt: new Date().toISOString()
+  };
+}

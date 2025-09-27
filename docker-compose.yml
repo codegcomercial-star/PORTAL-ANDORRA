@@ -1,65 +1,87 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: pgvector/pgvector:pg16
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
     environment:
-      POSTGRES_USER: portal
-      POSTGRES_PASSWORD: portal
-      POSTGRES_DB: portal
+      - PORT=3000
+      - DATABASE_URL=postgresql://portal_user:portal_password@postgres:5432/portal_andorra
+      - REDIS_URL=redis://redis:6379
+      - MEILISEARCH_URL=http://meilisearch:7700
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      meilisearch:
+        condition: service_healthy
+    networks:
+      - portal_network
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
     ports:
       - "5432:5432"
+    environment:
+      POSTGRES_DB: portal_andorra
+      POSTGRES_USER: portal_user
+      POSTGRES_PASSWORD: portal_password
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./infra/docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - portal_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U portal"]
-      interval: 5s
+      test: ["CMD-SHELL", "pg_isready -U portal_user -d portal_andorra"]
+      interval: 10s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
 
   redis:
     image: redis:7-alpine
     ports:
       - "6379:6379"
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
     volumes:
       - redis_data:/data
+    networks:
+      - portal_network
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 3s
+      interval: 10s
+      timeout: 5s
       retries: 5
+    restart: unless-stopped
 
   meilisearch:
-    image: getmeili/meilisearch:v1.5
-    environment:
-      MEILI_MASTER_KEY: masterKey
-      MEILI_ENV: development
+    image: getmeili/meilisearch:v1.4
     ports:
       - "7700:7700"
+    environment:
+      - MEILI_ENV=development
+      - MEILI_MASTER_KEY=portal_andorra_search_key
     volumes:
       - meilisearch_data:/meili_data
+    networks:
+      - portal_network
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:7700/health"]
       interval: 10s
       timeout: 5s
       retries: 5
-
-  mailhog:
-    image: mailhog/mailhog:latest
-    ports:
-      - "1025:1025"  # SMTP
-      - "8025:8025"  # Web UI
-    
-  # Optional: Development database UI
-  adminer:
-    image: adminer:latest
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
+    restart: unless-stopped
 
 volumes:
   postgres_data:
   redis_data:
   meilisearch_data:
+
+networks:
+  portal_network:
+    driver: bridge

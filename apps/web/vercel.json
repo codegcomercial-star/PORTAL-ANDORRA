@@ -1,0 +1,26 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install --legacy-peer-deps",
+  "env": {
+    "NEWS_API_KEY": "@news_api_key",
+    "NEWS_CACHE_DURATION": "3600",
+    "NEWS_UPDATE_INTERVAL": "300000"
+  },
+  "functions": {
+    "app/api/news/route.ts": {
+      "maxDuration": 30
+    }
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "s-maxage=300, stale-while-revalidate=3600"
+        }
+      ]
+    }
+  ]
+}

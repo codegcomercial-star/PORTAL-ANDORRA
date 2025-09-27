@@ -1,0 +1,26 @@
+{
+  "forwardPorts": [3000, 3001, 5432, 6379, 7700],
+  "portsAttributes": {
+    "3000": {
+      "label": "Portal Andorra Web",
+      "visibility": "public",
+      "onAutoForward": "openBrowser"
+    },
+    "3001": {
+      "label": "Portal API",
+      "visibility": "public"
+    },
+    "5432": {
+      "label": "PostgreSQL",
+      "visibility": "private"
+    },
+    "6379": {
+      "label": "Redis",
+      "visibility": "private"
+    },
+    "7700": {
+      "label": "MeiliSearch",
+      "visibility": "private"
+    }
+  }
+}

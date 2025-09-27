@@ -1,157 +1,270 @@
-import { useTranslations } from 'next-intl';
-import { setRequestLocale } from 'next-intl/server';
-import { MainLayout } from '@/components/layout/main-layout';
+'use client';
 
-interface Props {
-  params: { locale: string };
+import { useState, useEffect } from 'react';
+
+interface NewsArticle {
+  id: string;
+  title: string;
+  description: string;
+  content: string;
+  url: string;
+  image: string;
+  publishedAt: string;
+  source: string;
+  category: string;
 }
 
-const mockNoticias = [
-  {
-    id: 1,
-    title: "Nuevo acuerdo fiscal entre Andorra y España",
-    excerpt: "Se firma un nuevo convenio para evitar la doble imposición entre ambos países...",
-    date: "2024-03-15",
-    category: "Fiscal",
-    source: "El Periòdic d'Andorra",
-    image: "/api/placeholder/400/200"
-  },
-  {
-    id: 2,
-    title: "Andorra aprueba nueva ley de criptomonedas",
-    excerpt: "El Govern presenta el marco regulatorio para activos digitales en el Principado...",
-    date: "2024-03-10",
-    category: "Fintech",
-    source: "Diari d'Andorra",
-    image: "/api/placeholder/400/200"
-  },
-  {
-    id: 3,
-    title: "Récord de empresas registradas en 2024",
-    excerpt: "El número de nuevas sociedades constituidas aumenta un 15% respecto al año anterior...",
-    date: "2024-03-08",
-    category: "Economía",
-    source: "Bondia",
-    image: "/api/placeholder/400/200"
-  },
-  {
-    id: 4,
-    title: "Andorra Bank lanza nuevo servicio digital",
-    excerpt: "La entidad presenta su plataforma de banca online renovada con nuevas funcionalidades...",
-    date: "2024-03-05",
-    category: "Finanzas",
-    source: "ATV",
-    image: "/api/placeholder/400/200"
-  }
-];
+interface NewsResponse {
+  success: boolean;
+  articles: NewsArticle[];
+  total: number;
+  categories: string[];
+  lastUpdated: string;
+  error?: string;
+}
 
-export default function NoticiasPage({ params: { locale } }: Props) {
-  setRequestLocale(locale);
-  const t = useTranslations('NoticiasPage');
+const CATEGORY_COLORS: Record<string, string> = {
+  fiscal: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+  fintech: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
+  economia: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+  politica: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+  societat: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+  general: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+};
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'Fiscal': return 'bg-blue-100 text-blue-800';
-      case 'Fintech': return 'bg-purple-100 text-purple-800';
-      case 'Economía': return 'bg-green-100 text-green-800';
-      case 'Finanzas': return 'bg-orange-100 text-orange-800';
-      default: return 'bg-gray-100 text-gray-800';
+export default function NoticiasPage() {
+  const [news, setNews] = useState<NewsArticle[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [categories, setCategories] = useState<string[]>([]);
+  const [lastUpdated, setLastUpdated] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchNews = async (category: string = 'all') => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await fetch(`/api/news?category=${category}&limit=20`);
+      const data: NewsResponse = await response.json();
+      
+      if (data.success) {
+        setNews(data.articles);
+        setCategories(data.categories);
+        setLastUpdated(data.lastUpdated);
+      } else {
+        setError(data.error || 'Error desconocido');
+        setNews(data.articles || []);
+      }
+    } catch (err) {
+      setError('Error de conexión');
+      console.error('Error fetching news:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchNews(selectedCategory);
+  }, [selectedCategory]);
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+  };
+
+  const refreshNews = () => {
+    fetchNews(selectedCategory);
+  };
+
+  const getCategoryTranslation = (category: string) => {
+    const translations: Record<string, string> = {
+      all: 'Todas',
+      fiscal: 'Fiscal',
+      fintech: 'Fintech',
+      economia: 'Economía',
+      politica: 'Política',
+      societat: 'Sociedad',
+      general: 'General'
+    };
+    return translations[category] || category;
+  };
+
+  const formatTimeAgo = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffMs = now.getTime() - date.getTime();
+      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+      const diffDays = Math.floor(diffHours / 24);
+
+      if (diffDays > 0) {
+        return `hace ${diffDays} día${diffDays > 1 ? 's' : ''}`;
+      } else if (diffHours > 0) {
+        return `hace ${diffHours} hora${diffHours > 1 ? 's' : ''}`;
+      } else {
+        return 'hace unos minutos';
+      }
+    } catch {
+      return 'Fecha desconocida';
     }
   };
 
   return (
-    <MainLayout>
-      <div className="container mx-auto px-4 py-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-4">{t('title')}</h1>
-          <p className="text-lg text-gray-600 mb-8">
-            {t('description')}
-          </p>
-        </div>
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          Noticias
+        </h1>
+        <p className="text-gray-600 dark:text-gray-300 mb-6">
+          Últimas noticias de Andorra actualizadas en tiempo real.
+        </p>
+        
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+          <div className="flex flex-wrap gap-2">
+            <button
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                selectedCategory === 'all' 
+                  ? 'bg-blue-600 text-white' 
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+              }`}
+              onClick={() => handleCategoryChange('all')}
+            >
+              Todas
+            </button>
+            {categories.map((category) => (
+              <button
+                key={category}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  selectedCategory === category 
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                }`}
+                onClick={() => handleCategoryChange(category)}
+              >
+                {getCategoryTranslation(category)}
+              </button>
+            ))}
+          </div>
 
-        {/* Filtros */}
-        <div className="mb-8 flex flex-wrap gap-3">
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg">
-            Todas
-          </button>
-          <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
-            Fiscal
-          </button>
-          <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
-            Fintech
-          </button>
-          <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
-            Economía
-          </button>
-          <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
-            Finanzas
-          </button>
-        </div>
-
-        {/* Grid de noticias */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockNoticias.map((noticia) => (
-            <article key={noticia.id} className="bg-white rounded-lg shadow-sm border overflow-hidden hover:shadow-md transition-shadow">
-              <div className="h-48 bg-gray-200 flex items-center justify-center">
-                <span className="text-gray-500">📰 Imagen de noticia</span>
-              </div>
-              
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(noticia.category)}`}>
-                    {noticia.category}
-                  </span>
-                  <span className="text-sm text-gray-500">
-                    {new Date(noticia.date).toLocaleDateString('es-ES')}
-                  </span>
-                </div>
-                
-                <h3 className="text-lg font-semibold mb-3 line-clamp-2">
-                  {noticia.title}
-                </h3>
-                
-                <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                  {noticia.excerpt}
-                </p>
-                
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">
-                    {noticia.source}
-                  </span>
-                  <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                    Leer más →
-                  </button>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        {/* Fuentes oficiales */}
-        <div className="mt-12 bg-gray-50 rounded-lg p-6">
-          <h3 className="text-xl font-semibold mb-4">Fuentes Oficiales</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <a href="https://www.govern.ad" target="_blank" rel="noopener noreferrer" 
-               className="p-3 bg-white rounded-lg text-center hover:shadow-sm">
-              🏛️ Govern d&apos;Andorra
-            </a>
-            <a href="https://www.andorradifusio.ad" target="_blank" rel="noopener noreferrer"
-               className="p-3 bg-white rounded-lg text-center hover:shadow-sm">
-              📺 Andorra Difusió
-            </a>
-            <a href="https://www.elperiodic.ad" target="_blank" rel="noopener noreferrer"
-               className="p-3 bg-white rounded-lg text-center hover:shadow-sm">
-              📰 El Periòdic
-            </a>
-            <a href="https://www.diariandorra.ad" target="_blank" rel="noopener noreferrer"
-               className="p-3 bg-white rounded-lg text-center hover:shadow-sm">
-              📄 Diari d&apos;Andorra
-            </a>
+          <div className="flex items-center gap-4">
+            {lastUpdated && (
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                Actualizado {formatTimeAgo(lastUpdated)}
+              </span>
+            )}
+            <button
+              onClick={refreshNews}
+              disabled={loading}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 transition-colors flex items-center gap-2"
+            >
+              {loading && (
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              )}
+              {loading ? 'Cargando...' : 'Actualizar'}
+            </button>
           </div>
         </div>
       </div>
+
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6 dark:bg-red-900/20 dark:border-red-800">
+          <h3 className="text-sm font-medium text-red-800 dark:text-red-200">
+            Error al cargar noticias
+          </h3>
+          <p className="mt-2 text-sm text-red-700 dark:text-red-300">{error}</p>
+        </div>
+      )}
+
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="animate-pulse">
+              <div className="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg mb-4"></div>
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
+              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-2"></div>
+              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full mb-1"></div>
+              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <>
+          {news.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {news.map((article) => (
+                <div key={article.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                  <div className="aspect-video relative overflow-hidden">
+                    <img
+                      src={article.image}
+                      alt={article.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&h=600&fit=crop';
+                      }}
+                    />
+                    <div className="absolute top-2 left-2">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${CATEGORY_COLORS[article.category] || CATEGORY_COLORS.general}`}>
+                        {getCategoryTranslation(article.category)}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-6">
+                    <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-2">
+                      <span>{article.source}</span>
+                      <span>{formatTimeAgo(article.publishedAt)}</span>
+                    </div>
+                    
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
+                      {article.title}
+                    </h3>
+                    
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">
+                      {article.description}
+                    </p>
+                    
+                    <a
+                      href={article.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium transition-colors"
+                    >
+                      Leer más
+                      <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <div className="text-gray-500 dark:text-gray-400 mb-4">
+                <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3v6m0 0l-3-3m3 3l3-3" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                No hay noticias disponibles
+              </h3>
+              <p className="text-gray-500 dark:text-gray-400 mb-4">
+                No se encontraron noticias para la categoría seleccionada.
+              </p>
+              <button 
+                onClick={refreshNews} 
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              >
+                Intentar de nuevo
+              </button>
+            </div>
+          )}
+        </>
+      )}
     </div>
-    </MainLayout>
   );
 }
