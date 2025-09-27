@@ -1,4 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
+i// import { getServerSession } from 'next-auth';
+// import { authOptions } from '@/lib/auth';
+// import { prisma } from '@/lib/prisma';
+// import { redis } from '@/lib/redis';
+import { z } from 'zod';
+// import { rateLimit } from '@/lib/rate-limit';
+import { prisma, redis, rateLimit } from '@/lib/dummy-modules';
+
+const getServerSession = async () => null;
+const authOptions = {};{ NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 // import { prisma } from '@/lib/prisma';

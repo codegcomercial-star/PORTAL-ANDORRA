@@ -1,4 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import type { 
+  IRPFCalculationInput, 
+  IRPFCalculationResult 
+} from '../../../../types/irpf';
+import { 
+  ANDORRA_IRPF_BRACKETS, 
+  ANDORRA_DEDUCTIONS 
+} from '../../../../types/irpf';
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -15,7 +23,7 @@ export async function POST(request: NextRequest) {
   const totalIncome = income || Object.values(incomeBreakdown).reduce((sum: number, value: any) => sum + (value || 0), 0);
   const personalDeduction = 24000; // Base personal deduction for Andorra
   const dependentsDeduction = dependents * 6000;
-  const otherDeductions = typeof deductions === 'number' ? deductions : Object.values(deductions).reduce((sum: number, value: any) => sum + (value || 0), 0);
+  const otherDeductions = typeof deductions === 'number' ? deductions : Object.values(deductions || {}).reduce((sum: number, value: any) => sum + (Number(value) || 0), 0);
   
   const taxableIncome = Math.max(0, totalIncome - personalDeduction - dependentsDeduction - otherDeductions);
   
@@ -39,7 +47,7 @@ export async function POST(request: NextRequest) {
       personal: personalDeduction,
       dependents: dependentsDeduction,
       other: otherDeductions,
-      total: personalDeduction + dependentsDeduction + otherDeductions,
+      total: personalDeduction + dependentsDeduction + Number(otherDeductions),
     },
     taxableIncome,
     taxOwed: Math.round(taxOwed * 100) / 100,

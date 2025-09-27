@@ -43,7 +43,7 @@ class NewsCache {
   // Limpiar entradas expiradas
   cleanup(): void {
     const now = Date.now();
-    for (const [key, entry] of this.cache.entries()) {
+    for (const [key, entry] of Array.from(this.cache.entries())) {
       if (now - entry.timestamp > entry.expiresIn) {
         this.cache.delete(key);
       }

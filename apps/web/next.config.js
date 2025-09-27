@@ -6,10 +6,10 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false, // Cambiado para validar TypeScript
   },
   experimental: {
-    serverComponentsExternalPackages: ['@prisma/client'],
+    serverComponentsExternalPackages: ['@prisma/client', 'puppeteer-core', '@sparticuz/chromium'],
   },
   images: {
     domains: [

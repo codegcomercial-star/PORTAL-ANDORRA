@@ -1,44 +1,110 @@
 export interface WebhookEvent {
   id: string;
-  type: string;
+  type: 'payment.success' | 'payment.failed' | 'usage.limit' | 'account.created';
   data: Record<string, any>;
   timestamp: string;
+  retries: number;
+  delivered: boolean;
 }
 
-export interface WebhookConfig {
+export interface WebhookEndpoint {
+  id: string;
+  userId: string;
   url: string;
-  events: string[];
   secret: string;
+  events: WebhookEvent['type'][];
+  active: boolean;
+  createdAt: string;
 }
 
-export function createWebhookEvent(type: string, data: Record<string, any>): WebhookEvent {
+export interface WebhookDelivery {
+  id: string;
+  webhookId: string;
+  eventId: string;
+  url: string;
+  status: 'pending' | 'success' | 'failed';
+  response?: {
+    status: number;
+    body: string;
+    headers: Record<string, string>;
+  };
+  attemptedAt: string;
+  deliveredAt?: string;
+}
+
+export function createWebhookEvent(
+  type: WebhookEvent['type'],
+  data: Record<string, any>
+): WebhookEvent {
   return {
-    id: `evt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    id: `evt_${Date.now()}_${Math.random().toString(36).substring(7)}`,
     type,
     data,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    retries: 0,
+    delivered: false
   };
 }
 
-export async function sendWebhook(config: WebhookConfig, event: WebhookEvent): Promise<boolean> {
+export function generateWebhookSignature(payload: string, secret: string): string {
+  // Simple signature generation - in production use HMAC-SHA256
+  const timestamp = Math.floor(Date.now() / 1000);
+  return `t=${timestamp},v1=${Buffer.from(payload + secret).toString('base64')}`;
+}
+
+export async function deliverWebhook(
+  webhook: WebhookEndpoint,
+  event: WebhookEvent
+): Promise<WebhookDelivery> {
+  const delivery: WebhookDelivery = {
+    id: `del_${Date.now()}_${Math.random().toString(36).substring(7)}`,
+    webhookId: webhook.id,
+    eventId: event.id,
+    url: webhook.url,
+    status: 'pending',
+    attemptedAt: new Date().toISOString()
+  };
+
   try {
-    const response = await fetch(config.url, {
+    const payload = JSON.stringify(event);
+    const signature = generateWebhookSignature(payload, webhook.secret);
+    
+    const response = await fetch(webhook.url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Webhook-Signature': generateSignature(event, config.secret)
+        'X-Webhook-Signature': signature
       },
-      body: JSON.stringify(event)
+      body: payload
     });
-    
-    return response.ok;
+
+    delivery.response = {
+      status: response.status,
+      body: await response.text(),
+      headers: Object.fromEntries(response.headers.entries())
+    };
+
+    delivery.status = response.ok ? 'success' : 'failed';
+    if (response.ok) {
+      delivery.deliveredAt = new Date().toISOString();
+    }
   } catch (error) {
-    console.error('Webhook delivery failed:', error);
-    return false;
+    delivery.status = 'failed';
+    delivery.response = {
+      status: 0,
+      body: error instanceof Error ? error.message : 'Unknown error',
+      headers: {}
+    };
   }
+
+  return delivery;
 }
 
-function generateSignature(event: WebhookEvent, secret: string): string {
-  // Simple signature generation - in production use proper HMAC
-  return `sha256=${Buffer.from(JSON.stringify(event) + secret).toString('base64')}`;
+export function validateWebhookUrl(url: string): boolean {
+  try {
+    const parsedUrl = new URL(url);
+    return parsedUrl.protocol === 'https:' && parsedUrl.hostname !== 'localhost';
+  } catch {
+    return false;
+  }
 }

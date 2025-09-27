@@ -1,145 +1,15 @@
 {
+  "home": {
+    "title": "Portal Andorra",
+    "description": "Tu portal para servicios andorranos"
+  },
   "navigation": {
-    "home": "Accueil",
-    "bopa": "BOPA",
-    "normativa": "Réglementation",
-    "noticias": "Actualités",
-    "clima": "Météo",
-    "finanzas": "Finance",
-    "cripto": "Crypto",
-    "irpf": "IRPF",
-    "buscador": "Recherche IA",
-    "admin": "Admin",
-    "login": "Connexion",
-    "logout": "Déconnexion",
-    "profile": "Profil"
+    "home": "Inicio",
+    "search": "Buscar",
+    "services": "Servicios"
   },
   "common": {
-    "loading": "Chargement...",
-    "error": "Erreur",
-    "success": "Succès",
-    "save": "Enregistrer",
-    "cancel": "Annuler",
-    "delete": "Supprimer",
-    "edit": "Modifier",
-    "search": "Rechercher",
-    "filter": "Filtrer",
-    "export": "Exporter",
-    "import": "Importer",
-    "language": "Langue",
-    "theme": "Thème",
-    "light": "Clair",
-    "dark": "Sombre"
-  },
-  "home": {
-    "title": "Portail Économique d'Andorre",
-    "subtitle": "Votre source d'information économique et juridique d'Andorre",
-    "hero": {
-      "title": "Toute l'information d'Andorre en un seul endroit",
-      "description": "Accédez au BOPA, à la réglementation, aux actualités, aux finances et au calculateur IRPF avec la puissance de l'intelligence artificielle"
-    },
-    "features": {
-      "bopa": {
-        "title": "BOPA",
-        "description": "Accès complet au Bulletin Officiel de la Principauté d'Andorre"
-      },
-      "normativa": {
-        "title": "Réglementation",
-        "description": "Portail Juridique avec toutes les lois et règlements"
-      },
-      "news": {
-        "title": "Actualités",
-        "description": "Agrégateur d'actualités des médias andorrans"
-      },
-      "irpf": {
-        "title": "Calculateur IRPF",
-        "description": "Calculez vos impôts avec les tarifs officiels"
-      },
-      "ai": {
-        "title": "Recherche IA",
-        "description": "Posez n'importe quelle question sur la réglementation andorrane"
-      },
-      "finance": {
-        "title": "Finance",
-        "description": "Marchés, devises et cryptomonnaies en temps réel"
-      }
-    }
-  },
-  "SearchPage": {
-    "title": "Recherche IA",
-    "subtitle": "Rechercher des informations avec l'intelligence artificielle",
-    "description": "Utilisez notre recherche intelligente pour trouver des informations spécifiques sur la réglementation, le BOPA et plus encore."
-  },
-  "IRPFPage": {
-    "title": "Calculateur IRPF",
-    "subtitle": "Calculez vos impôts en Andorre",
-    "description": "Outil officiel pour calculer l'Impôt sur le Revenu des Personnes Physiques en Andorre.",
-    "simulation": "Simulation IRPF",
-    "simulationDesc": "Simulez votre déclaration annuelle",
-    "calculator": "Calculateur",
-    "calculatorDesc": "Calculez des impôts spécifiques"
-  },
-  "BOPAPage": {
-    "title": "BOPA",
-    "subtitle": "Bulletin Officiel de la Principauté d'Andorre",
-    "description": "Consultez toutes les publications officielles du gouvernement andorran."
-  },
-  "NormativaPage": {
-    "title": "Réglementation",
-    "subtitle": "Portail Juridique d'Andorre",
-    "description": "Accès complet à toutes les lois et règlements de la Principauté d'Andorre."
-  },
-  "NoticiasPage": {
-    "title": "Actualités",
-    "subtitle": "Actualités d'Andorre",
-    "description": "Agrégateur d'actualités des principaux médias andorrans."
-  },
-  "ClimaPage": {
-    "title": "Météo",
-    "subtitle": "Informations météorologiques",
-    "description": "Consultez la météo actuelle et les prévisions météorologiques pour Andorre."
-  },
-  "FinanzasPage": {
-    "title": "Finance",
-    "subtitle": "Informations financières",
-    "description": "Marchés, devises et cryptomonnaies en temps réel."
-  },
-  "CriptoPage": {
-    "title": "Cryptomonnaies",
-    "subtitle": "Marché crypto",
-    "description": "Suivi des cryptomonnaies et blockchain en Andorre."
-  },
-  "PrivacitatPage": {
-    "title": "Politique de Confidentialité",
-    "subtitle": "Protection des données",
-    "description": "Informations sur la façon dont nous protégeons et utilisons vos données personnelles."
-  },
-  "TermesPage": {
-    "title": "Conditions d'Utilisation",
-    "subtitle": "Conditions de service",
-    "description": "Termes et conditions pour l'utilisation de nos services."
-  },
-  "CookiesPage": {
-    "title": "Politique de Cookies",
-    "subtitle": "Utilisation des cookies",
-    "description": "Informations sur l'utilisation de cookies sur notre site web."
-  },
-  "ContactePage": {
-    "title": "Contact",
-    "subtitle": "Contactez-nous",
-    "description": "Formulaire de contact et informations pour communiquer avec notre équipe."
-  },
-  "auth": {
-    "signIn": "Se connecter",
-    "signOut": "Se déconnecter",
-    "signUp": "S'inscrire",
-    "email": "Email",
-    "password": "Mot de passe",
-    "forgotPassword": "Mot de passe oublié?",
-    "rememberMe": "Se souvenir de moi",
-    "or": "ou",
-    "continueWith": "Continuer avec {provider}",
-    "magicLink": "Lien magique",
-    "magicLinkSent": "Nous vous avons envoyé un lien magique par email"
+    "loading": "Cargando...",
+    "error": "Error"
   }
 }

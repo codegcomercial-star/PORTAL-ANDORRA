@@ -1,34 +1,69 @@
+export interface AnalyticsUser {
+  id: string;
+  requests: number;
+  lastSeen: string;
+}
+
+export interface AnalyticsEndpoint {
+  path: string;
+  requests: number;
+  avgResponseTime: number;
+}
+
+export interface AnalyticsUser {
+  id: string;
+  requests: number;
+  lastSeen: string;
+}
+
+export interface AnalyticsEndpoint {
+  path: string;
+  requests: number;
+  avgResponseTime: number;
+}
+
 export interface AnalyticsData {
-  requests: number;
-  users: number;
+  totalRequests: number;
+  activeUsers: number;
   revenue: number;
-  endpoints: Record<string, number>;
+  topEndpoints: AnalyticsEndpoint[];
 }
 
-export interface UsageStats {
-  hour: string;
-  requests: number;
+export interface UsageRecord {
+  userId: string;
+  endpoint: string;
+  timestamp: string;
+  responseTime: number;
+  cost: number;
 }
 
-export function calculateUsage(data: any[]): AnalyticsData {
-  return {
-    requests: data.length || 0,
-    users: new Set(data.map(d => d.userId)).size || 0,
-    revenue: data.reduce((sum: number, d: any) => sum + (d.cost || 0), 0),
-    endpoints: data.reduce((acc: Record<string, number>, d: any) => {
-      acc[d.endpoint] = (acc[d.endpoint] || 0) + 1;
-      return acc;
-    }, {})
-  };
-}
-
-export function generateHourlyStats(data: any[]): UsageStats[] {
-  const hourlyData: Record<string, number> = {};
+export function calculateAnalytics(records: UsageRecord[]): AnalyticsData {
+  const totalRequests = records.length;
+  const activeUsers = new Set(records.map(r => r.userId)).size;
+  const revenue = records.reduce((sum, record) => sum + record.cost, 0);
   
-  data.forEach(item => {
-    const hour = new Date(item.timestamp).getHours().toString().padStart(2, '0') + ':00';
-    hourlyData[hour] = (hourlyData[hour] || 0) + 1;
-  });
+  const endpointStats = records.reduce((acc, record) => {
+    if (!acc[record.endpoint]) {
+      acc[record.endpoint] = { requests: 0, totalTime: 0 };
+    }
+    acc[record.endpoint].requests++;
+    acc[record.endpoint].totalTime += record.responseTime;
+    return acc;
+  }, {} as Record<string, { requests: number; totalTime: number }>);
 
-  return Object.entries(hourlyData).map(([hour, requests]) => ({ hour, requests }));
+  const topEndpoints = Object.entries(endpointStats)
+    .map(([path, stats]) => ({
+      path,
+      requests: stats.requests,
+      avgResponseTime: stats.totalTime / stats.requests
+    }))
+    .sort((a, b) => b.requests - a.requests)
+    .slice(0, 10);
+
+  return {
+    totalRequests,
+    activeUsers,
+    revenue,
+    topEndpoints
+  };
 }

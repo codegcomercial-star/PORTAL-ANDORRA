@@ -1,0 +1,36 @@
+# ERRORES EXACTOS ENCONTRADOS EN EL BUILD
+
+## Error 1: /workspaces/PORTAL-ANDORRA/apps/web/src/app/api/irpf/simulate/route.ts
+
+**Línea 20:**
+```typescript
+const taxableIncome = Math.max(0, totalIncome - personalDeduction - dependentsDeduction - otherDeductions);
+```
+**Error:** La parte derecha de una operación aritmética debe ser de tipo "any", "number", "bigint" o un tipo de enumeración.
+
+**Línea 42:**
+```typescript
+total: personalDeduction + dependentsDeduction + otherDeductions,
+```
+**Error:** El operador '+' no se puede aplicar a los tipos 'number' y 'unknown'.
+
+## Error 2: /workspaces/PORTAL-ANDORRA/apps/web/src/lib/news-cache.ts
+
+**Línea 46:**
+```typescript
+for (const [key, entry] of this.cache.entries()) {
+```
+**Error:** El tipo "MapIterator<[string, CacheEntry<any>]>" solo puede iterarse cuando se usa la marca "--downlevelIteration" o con un valor "--target" de "es2015" o superior.
+
+## Error 3: GitHub Workflows
+
+**Archivo:** /workspaces/PORTAL-ANDORRA/.github/workflows/test.yml
+**Error:** (Sin detalles específicos - posible error de configuración)
+
+## RESUMEN DE ERRORES:
+
+1. **Problemas de tipos TypeScript** en simulador IRPF (2 errores)
+2. **Problema de iteración** en sistema de caché (1 error) 
+3. **Posible error en workflow** de GitHub Actions (1 error)
+
+**Total: 4 errores identificados**

@@ -1,6 +1,10 @@
 import { notFound } from 'next/navigation';
 import { getRequestConfig } from 'next-intl/server';
 
+// Can be imported from a shared config
+import { notFound } from 'next/navigation';
+import { getRequestConfig } from 'next-intl/server';
+
 // Define the locales supported by your application
 export const locales = ['es', 'ca', 'en', 'fr'] as const;
 export type Locale = typeof locales[number];

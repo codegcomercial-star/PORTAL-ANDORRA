@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export function parseSearchParams(searchParams: URLSearchParams) {
   const params: Record<string, string> = {};
   
-  for (const [key, value] of searchParams.entries()) {
+  for (const [key, value] of Array.from(searchParams.entries())) {
     params[key] = value;
   }
   
