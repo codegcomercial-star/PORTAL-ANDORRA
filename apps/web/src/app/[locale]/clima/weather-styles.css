@@ -1,0 +1,20 @@
+/* Variables CSS personalizadas para la página del clima */
+:root {
+  --weather-primary: #3b82f6;
+  --weather-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animaciones personalizadas */
+@keyframes weatherFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.weather-icon {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  transition: var(--weather-transition);
+}
+
+.weather-icon:hover {
+  transform: scale(1.1);
+}

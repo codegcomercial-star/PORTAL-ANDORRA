@@ -65,17 +65,81 @@
       }
     }
   },
+  "SearchPage": {
+    "title": "Recherche IA",
+    "subtitle": "Rechercher des informations avec l'intelligence artificielle",
+    "description": "Utilisez notre recherche intelligente pour trouver des informations spécifiques sur la réglementation, le BOPA et plus encore."
+  },
+  "IRPFPage": {
+    "title": "Calculateur IRPF",
+    "subtitle": "Calculez vos impôts en Andorre",
+    "description": "Outil officiel pour calculer l'Impôt sur le Revenu des Personnes Physiques en Andorre.",
+    "simulation": "Simulation IRPF",
+    "simulationDesc": "Simulez votre déclaration annuelle",
+    "calculator": "Calculateur",
+    "calculatorDesc": "Calculez des impôts spécifiques"
+  },
+  "BOPAPage": {
+    "title": "BOPA",
+    "subtitle": "Bulletin Officiel de la Principauté d'Andorre",
+    "description": "Consultez toutes les publications officielles du gouvernement andorran."
+  },
+  "NormativaPage": {
+    "title": "Réglementation",
+    "subtitle": "Portail Juridique d'Andorre",
+    "description": "Accès complet à toutes les lois et règlements de la Principauté d'Andorre."
+  },
+  "NoticiasPage": {
+    "title": "Actualités",
+    "subtitle": "Actualités d'Andorre",
+    "description": "Agrégateur d'actualités des principaux médias andorrans."
+  },
+  "ClimaPage": {
+    "title": "Météo",
+    "subtitle": "Informations météorologiques",
+    "description": "Consultez la météo actuelle et les prévisions météorologiques pour Andorre."
+  },
+  "FinanzasPage": {
+    "title": "Finance",
+    "subtitle": "Informations financières",
+    "description": "Marchés, devises et cryptomonnaies en temps réel."
+  },
+  "CriptoPage": {
+    "title": "Cryptomonnaies",
+    "subtitle": "Marché crypto",
+    "description": "Suivi des cryptomonnaies et blockchain en Andorre."
+  },
+  "PrivacitatPage": {
+    "title": "Politique de Confidentialité",
+    "subtitle": "Protection des données",
+    "description": "Informations sur la façon dont nous protégeons et utilisons vos données personnelles."
+  },
+  "TermesPage": {
+    "title": "Conditions d'Utilisation",
+    "subtitle": "Conditions de service",
+    "description": "Termes et conditions pour l'utilisation de nos services."
+  },
+  "CookiesPage": {
+    "title": "Politique de Cookies",
+    "subtitle": "Utilisation des cookies",
+    "description": "Informations sur l'utilisation de cookies sur notre site web."
+  },
+  "ContactePage": {
+    "title": "Contact",
+    "subtitle": "Contactez-nous",
+    "description": "Formulaire de contact et informations pour communiquer avec notre équipe."
+  },
   "auth": {
     "signIn": "Se connecter",
     "signOut": "Se déconnecter",
     "signUp": "S'inscrire",
-    "email": "E-mail",
+    "email": "Email",
     "password": "Mot de passe",
-    "forgotPassword": "Mot de passe oublié ?",
+    "forgotPassword": "Mot de passe oublié?",
     "rememberMe": "Se souvenir de moi",
     "or": "ou",
     "continueWith": "Continuer avec {provider}",
     "magicLink": "Lien magique",
-    "magicLinkSent": "Nous vous avons envoyé un lien magique par e-mail"
+    "magicLinkSent": "Nous vous avons envoyé un lien magique par email"
   }
 }

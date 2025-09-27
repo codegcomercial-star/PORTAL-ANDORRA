@@ -5,16 +5,17 @@ export async function POST(request: NextRequest) {
   const { 
     year = 2024,
     residency = 'RESIDENT',
+    income = 0,
     incomeBreakdown = {},
     dependents = 0,
-    deductions = {}
+    deductions = 0
   } = body;
 
   // Mock IRPF calculation
-  const totalIncome = Object.values(incomeBreakdown).reduce((sum: number, value: any) => sum + (value || 0), 0);
+  const totalIncome = income || Object.values(incomeBreakdown).reduce((sum: number, value: any) => sum + (value || 0), 0);
   const personalDeduction = 24000; // Base personal deduction for Andorra
   const dependentsDeduction = dependents * 6000;
-  const otherDeductions = Object.values(deductions).reduce((sum: number, value: any) => sum + (value || 0), 0);
+  const otherDeductions = typeof deductions === 'number' ? deductions : Object.values(deductions).reduce((sum: number, value: any) => sum + (value || 0), 0);
   
   const taxableIncome = Math.max(0, totalIncome - personalDeduction - dependentsDeduction - otherDeductions);
   

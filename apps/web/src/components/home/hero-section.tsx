@@ -22,7 +22,7 @@ export function HeroSection() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link href="/buscador">
+            <Link href={"/buscador" as any}>
               <Button size="lg" className="bg-white text-andorra-blue hover:bg-gray-100">
                 <Search className="mr-2 h-5 w-5" />
                 Prova el cercador IA
@@ -30,7 +30,7 @@ export function HeroSection() {
               </Button>
             </Link>
             
-            <Link href="/irpf">
+            <Link href={"/irpf" as any}>
               <Button 
                 size="lg" 
                 variant="outline" 

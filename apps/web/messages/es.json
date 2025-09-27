@@ -65,6 +65,70 @@
       }
     }
   },
+  "SearchPage": {
+    "title": "Buscador IA",
+    "subtitle": "Busca información con inteligencia artificial",
+    "description": "Utiliza nuestro buscador inteligente para encontrar información específica sobre normativa, BOPA y más."
+  },
+  "IRPFPage": {
+    "title": "Calculadora IRPF",
+    "subtitle": "Calcula tus impuestos en Andorra",
+    "description": "Herramienta oficial para calcular el Impuesto sobre la Renta de las Personas Físicas en Andorra.",
+    "simulation": "Simulación IRPF",
+    "simulationDesc": "Simula tu declaración anual",
+    "calculator": "Calculadora",
+    "calculatorDesc": "Calcula impuestos específicos"
+  },
+  "BOPAPage": {
+    "title": "BOPA",
+    "subtitle": "Boletín Oficial del Principado de Andorra",
+    "description": "Consulta todas las publicaciones oficiales del gobierno de Andorra."
+  },
+  "NormativaPage": {
+    "title": "Normativa",
+    "subtitle": "Portal Jurídico de Andorra",
+    "description": "Acceso completo a todas las leyes y reglamentos del Principado de Andorra."
+  },
+  "NoticiasPage": {
+    "title": "Noticias",
+    "subtitle": "Noticias de Andorra",
+    "description": "Agregador de noticias de los principales medios de comunicación andorranos."
+  },
+  "ClimaPage": {
+    "title": "Clima",
+    "subtitle": "Información meteorológica",
+    "description": "Consulta el tiempo actual y las previsiones meteorológicas para Andorra."
+  },
+  "FinanzasPage": {
+    "title": "Finanzas",
+    "subtitle": "Mercados financieros",
+    "description": "Información en tiempo real sobre mercados, divisas y datos financieros."
+  },
+  "CriptoPage": {
+    "title": "Criptomonedas",
+    "subtitle": "Mercado cripto",
+    "description": "Seguimiento de criptomonedas y blockchain en Andorra."
+  },
+  "PrivacitatPage": {
+    "title": "Política de Privacidad",
+    "subtitle": "Protección de datos",
+    "description": "Información sobre cómo protegemos y utilizamos tus datos personales."
+  },
+  "TermesPage": {
+    "title": "Términos de Uso",
+    "subtitle": "Condiciones de servicio",
+    "description": "Términos y condiciones para el uso de nuestros servicios."
+  },
+  "CookiesPage": {
+    "title": "Política de Cookies",
+    "subtitle": "Uso de cookies",
+    "description": "Información sobre el uso de cookies en nuestro sitio web."
+  },
+  "ContactePage": {
+    "title": "Contacto",
+    "subtitle": "Ponte en contacto con nosotros",
+    "description": "Formulario de contacto y información para comunicarte con nuestro equipo."
+  },
   "auth": {
     "signIn": "Iniciar sesión",
     "signOut": "Cerrar sesión",

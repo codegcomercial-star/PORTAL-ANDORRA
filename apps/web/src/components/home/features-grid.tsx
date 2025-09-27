@@ -93,7 +93,7 @@ export function FeaturesGrid() {
             return (
               <Link
                 key={feature.name}
-                href={feature.href}
+                href={feature.href as any}
                 className="group relative p-6 bg-card border rounded-lg hover:shadow-lg transition-all duration-200 hover:-translate-y-1"
               >
                 <div className={`w-12 h-12 rounded-lg ${feature.color} flex items-center justify-center mb-4`}>

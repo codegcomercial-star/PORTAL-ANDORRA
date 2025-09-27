@@ -25,30 +25,30 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-4">Informació</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/bopa" className="text-muted-foreground hover:text-foreground">{t('bopa')}</Link></li>
-              <li><Link href="/normativa" className="text-muted-foreground hover:text-foreground">{t('normativa')}</Link></li>
-              <li><Link href="/noticias" className="text-muted-foreground hover:text-foreground">{t('noticias')}</Link></li>
-              <li><Link href="/clima" className="text-muted-foreground hover:text-foreground">{t('clima')}</Link></li>
+              <li><Link href={"/bopa" as any} className="text-muted-foreground hover:text-foreground">{t('bopa')}</Link></li>
+              <li><Link href={"/normativa" as any} className="text-muted-foreground hover:text-foreground">{t('normativa')}</Link></li>
+              <li><Link href={"/noticias" as any} className="text-muted-foreground hover:text-foreground">{t('noticias')}</Link></li>
+              <li><Link href={"/clima" as any} className="text-muted-foreground hover:text-foreground">{t('clima')}</Link></li>
             </ul>
           </div>
 
           <div>
             <h3 className="font-semibold mb-4">Serveis</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/finanzas" className="text-muted-foreground hover:text-foreground">{t('finanzas')}</Link></li>
-              <li><Link href="/cripto" className="text-muted-foreground hover:text-foreground">{t('cripto')}</Link></li>
-              <li><Link href="/irpf" className="text-muted-foreground hover:text-foreground">{t('irpf')}</Link></li>
-              <li><Link href="/buscador" className="text-muted-foreground hover:text-foreground">{t('buscador')}</Link></li>
+              <li><Link href={"/finanzas" as any} className="text-muted-foreground hover:text-foreground">{t('finanzas')}</Link></li>
+              <li><Link href={"/cripto" as any} className="text-muted-foreground hover:text-foreground">{t('cripto')}</Link></li>
+              <li><Link href={"/irpf" as any} className="text-muted-foreground hover:text-foreground">{t('irpf')}</Link></li>
+              <li><Link href={"/buscador" as any} className="text-muted-foreground hover:text-foreground">{t('buscador')}</Link></li>
             </ul>
           </div>
 
           <div>
             <h3 className="font-semibold mb-4">Legal</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/privacitat" className="text-muted-foreground hover:text-foreground">Privacitat</Link></li>
-              <li><Link href="/termes" className="text-muted-foreground hover:text-foreground">Termes d&apos;ús</Link></li>
-              <li><Link href="/cookies" className="text-muted-foreground hover:text-foreground">Cookies</Link></li>
-              <li><Link href="/contacte" className="text-muted-foreground hover:text-foreground">Contacte</Link></li>
+              <li><Link href={"/privacitat" as any} className="text-muted-foreground hover:text-foreground">Privacitat</Link></li>
+              <li><Link href={"/termes" as any} className="text-muted-foreground hover:text-foreground">Termes d&apos;ús</Link></li>
+              <li><Link href={"/cookies" as any} className="text-muted-foreground hover:text-foreground">Cookies</Link></li>
+              <li><Link href={"/contacte" as any} className="text-muted-foreground hover:text-foreground">Contacte</Link></li>
             </ul>
           </div>
         </div>

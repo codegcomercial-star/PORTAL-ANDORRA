@@ -4,7 +4,30 @@ import { Globe } from 'lucide-react';
 import { useLocale } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
 
-import { Button } from '@/components/ui/button';
+// Button component inline
+const Button: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement> & { 
+  children: React.ReactNode; 
+  variant?: 'default' | 'ghost' | 'outline';
+  size?: 'sm' | 'default' | 'lg';
+}> = ({ children, className, variant = 'default', size = 'default', ...props }) => {
+  const baseClasses = 'inline-flex items-center justify-center rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed';
+  const variantClasses = {
+    default: 'bg-blue-600 text-white hover:bg-blue-700',
+    ghost: 'hover:bg-gray-100 text-gray-700',
+    outline: 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+  };
+  const sizeClasses = {
+    sm: 'px-3 py-1.5 text-sm',
+    default: 'px-4 py-2',
+    lg: 'px-6 py-3 text-lg'
+  };
+  
+  return (
+    <button className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`} {...props}>
+      {children}
+    </button>
+  );
+};
 
 const locales = [
   { code: 'ca', name: 'Català', flag: '🇦🇩' },
@@ -23,7 +46,7 @@ export function LanguageSelector() {
     const segments = pathname.split('/');
     segments[1] = newLocale;
     const newPath = segments.join('/');
-    router.push(newPath);
+    router.push(newPath as any);
   };
 
   const currentLocale = locales.find(l => l.code === locale) || locales[0];

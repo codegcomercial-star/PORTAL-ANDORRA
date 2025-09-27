@@ -3,10 +3,33 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useTheme } from 'next-themes';
+import { useTheme } from '@/components/theme-provider';
 import { Menu, X, Search, Globe, Sun, Moon, User } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
+// Button component inline with variants
+const Button: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement> & { 
+  children: React.ReactNode; 
+  variant?: 'default' | 'ghost' | 'outline';
+  size?: 'sm' | 'default' | 'lg';
+}> = ({ children, className, variant = 'default', size = 'default', ...props }) => {
+  const baseClasses = 'inline-flex items-center justify-center rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed';
+  const variantClasses = {
+    default: 'bg-blue-600 text-white hover:bg-blue-700',
+    ghost: 'hover:bg-gray-100 text-gray-700',
+    outline: 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+  };
+  const sizeClasses = {
+    sm: 'px-3 py-1.5 text-sm',
+    default: 'px-4 py-2',
+    lg: 'px-6 py-3 text-lg'
+  };
+  
+  return (
+    <button className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`} {...props}>
+      {children}
+    </button>
+  );
+};
 import { LanguageSelector } from './language-selector';
 
 export function Header() {
@@ -32,11 +55,14 @@ export function Header() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-4">
-            <Link href="/" className="flex items-center space-x-2">
+            <Link href={"/" as any} className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-andorra-blue rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">PA</span>
               </div>
-              <span className="font-bold text-xl">Portal Andorra</span>
+              <div className="flex flex-col">
+                <span className="font-bold text-xl">Portal Andorra</span>
+                <span className="text-xs text-gray-500">By Nexora</span>
+              </div>
             </Link>
           </div>
 
@@ -45,7 +71,7 @@ export function Header() {
             {navigation.slice(0, 5).map((item) => (
               <Link
                 key={item.name}
-                href={item.href}
+                href={item.href as any}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
                 {item.name}
@@ -61,7 +87,7 @@ export function Header() {
                 {navigation.slice(5).map((item) => (
                   <Link
                     key={item.name}
-                    href={item.href}
+                    href={item.href as any}
                     className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent"
                   >
                     {item.name}
@@ -115,7 +141,7 @@ export function Header() {
               {navigation.map((item) => (
                 <Link
                   key={item.name}
-                  href={item.href}
+                  href={item.href as any}
                   className="block px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
