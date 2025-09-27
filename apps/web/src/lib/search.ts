@@ -1,8 +1,8 @@
-import { newsService } from './news.js';
-import { bopaService } from './bopa.js';
-import { realEstateService } from './real-estate.js';
-import { jobService } from './jobs.js';
-import { rateLimit } from './rate-limit.js';
+import { newsService } from './news';
+import { bopaService } from './bopa';
+import { realEstateService } from './real-estate';
+import { jobService } from './jobs';
+import { rateLimit } from './rate-limit';
 
 export interface SearchResult {
   id: string;

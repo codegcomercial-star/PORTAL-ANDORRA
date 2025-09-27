@@ -1,0 +1,146 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// News Articles
+model News {
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  url         String   @unique
+  publishedAt DateTime
+  source      String
+  category    String
+  language    String   @default("ca")
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("news")
+  @@index([publishedAt])
+  @@index([category])
+  @@index([language])
+}
+
+// BOPA Documents
+model BOPADocument {
+  id            String   @id @default(cuid())
+  numero        String
+  fecha         DateTime
+  titulo        String
+  contenido     String
+  seccion       String
+  tipo          String
+  url           String   @unique
+  pdfUrl        String?
+  extractedText String?
+  keywords      String[]
+  language      String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("bopa_documents")
+  @@index([fecha])
+  @@index([seccion])
+  @@index([tipo])
+}
+
+// Real Estate Properties
+model RealEstateProperty {
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  price        Float
+  currency     String   @default("EUR")
+  propertyType String
+  location     String
+  bedrooms     Int?
+  bathrooms    Int?
+  size         Float?
+  images       String[]
+  url          String   @unique
+  source       String
+  contactInfo  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("real_estate_properties")
+  @@index([propertyType])
+  @@index([location])
+  @@index([price])
+}
+
+// Job Offers
+model JobOffer {
+  id          String   @id @default(cuid())
+  title       String
+  company     String
+  description String
+  location    String
+  salary      String?
+  jobType     String
+  category    String
+  requirements String[]
+  benefits    String[]
+  url         String   @unique
+  source      String
+  contactInfo String?
+  expiresAt   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("job_offers")
+  @@index([category])
+  @@index([location])
+  @@index([jobType])
+}
+
+// User Profiles
+model UserProfile {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String?
+  avatar      String?
+  language    String   @default("ca")
+  preferences String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("user_profiles")
+}
+
+// Search Queries
+model SearchQuery {
+  id          String   @id @default(cuid())
+  query       String
+  filters     String?
+  results     Int      @default(0)
+  userId      String?
+  source      String?
+  language    String   @default("ca")
+  executedAt  DateTime @default(now())
+
+  @@map("search_queries")
+  @@index([query])
+  @@index([executedAt])
+}
+
+// System Status
+model SystemStatus {
+  id          String   @id @default(cuid())
+  service     String   @unique
+  status      String
+  lastCheck   DateTime @default(now())
+  metadata    String?
+  updatedAt   DateTime @updatedAt
+
+  @@map("system_status")
+}

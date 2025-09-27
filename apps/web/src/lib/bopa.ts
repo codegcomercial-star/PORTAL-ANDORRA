@@ -1,5 +1,5 @@
-import { prisma } from './prisma.js';
-import { rateLimit } from './rate-limit.js';
+import { prisma } from './prisma';
+import { rateLimit } from './rate-limit';
 
 export interface BOPADocument {
   id: string;

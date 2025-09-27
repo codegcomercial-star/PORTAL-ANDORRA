@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { prisma } from './prisma.js';
+import { prisma } from './prisma';
 
 export interface NewsItem {
   id: string;
